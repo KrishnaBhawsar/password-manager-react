@@ -20,7 +20,7 @@ function Login() {
             return;
         }
 
-        axios.post("https://passwordmanager-07xe.onrender.co/login",{
+        axios.post("https://passwordmanager-07xe.onrender.com/login",{
             username, password
         }).then((response)=>{
             console.log(response);

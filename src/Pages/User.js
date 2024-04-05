@@ -44,7 +44,7 @@ function User() {
     const handleAddAccount = (containerId) => {
         const token = localStorage.getItem('token');
         try {
-            axios.post("https://passwordmanager-07xe.onrender.co/account/add", { email, password, containerId }, {
+            axios.post("https://passwordmanager-07xe.onrender.com/account/add", { email, password, containerId }, {
                 headers: {
                     Authorization: `Bearer ${token}` // Set the Authorization header with the token
                 }
@@ -95,7 +95,7 @@ function User() {
     const handleDeleteAccount = async (accountId) => {
         const token = localStorage.getItem('token');
         try {
-            axios.delete(`https://passwordmanager-07xe.onrender.co/account/delete`, {
+            axios.delete(`https://passwordmanager-07xe.onrender.com/account/delete`, {
                 params:{accountId:accountId},
                 headers: {
                     Authorization: `Bearer ${token}` // Set the Authorization header with the token
