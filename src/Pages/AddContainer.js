@@ -31,7 +31,7 @@ function AddContainer() {
 
     const handleSubmit = () => {
         const token = localStorage.getItem('token');
-        axios.post("https://passwordmanager-07xe.onrender.com/container/add",{ websiteUrl, accounts}, {
+        axios.post("https://passwordmanager-07xe.onrender.co/container/add",{ websiteUrl, accounts}, {
             headers: {
                 Authorization: `Bearer ${token}` // Set the Authorization header with the token
             }

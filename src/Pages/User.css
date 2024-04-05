@@ -1,5 +1,5 @@
-.container {
-  width: 70%;
+.user-container {
+  width: 50%;
   margin: auto;
   padding: 20px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -8,38 +8,34 @@
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 }
 
-
-
-.heading {
-  font-size: 28px; /* Increased font size */
+.user-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 20px;
+}
+
+.user-header h2 {
+  font-size: 24px;
   color: #333;
 }
 
-.add-button {
+.add-container-button {
   background-color: #007bff;
   color: #fff;
   border: none;
-  padding: 14px 28px; /* Adjusted padding */
+  padding: 12px 24px;
   border-radius: 8px;
   cursor: pointer;
-  float: right;
   transition: background-color 0.3s ease;
-  display: inline-flex;
-  align-items: center;
 }
 
-.add-button i {
-  margin-right: 8px;
-}
-
-.add-button:hover {
+.add-container-button:hover {
   background-color: #0056b3;
 }
 
-.list {
-  list-style: none;
-  padding: 0;
+.container-list {
+  margin-top: 20px;
 }
 
 .container-item {
@@ -55,32 +51,60 @@
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.website {
-  font-size: 24px; /* Increased font size */
-  color: #007bff;
-  cursor: pointer;
+.container-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.show-password {
-  background-color: transparent;
-  border: none;
-  font-size: 18px; /* Increased font size */
-  color: #007bff;
   cursor: pointer;
-  transition: color 0.3s ease;
 }
 
-.show-password:hover {
-  color: #0056b3;
+.container-header span {
+  font-size: 20px;
+  color: #007bff;
 }
 
-.accounts {
-  list-style: none;
-  padding: 0;
+.account-list {
   margin-top: 10px;
+}
+
+.add-account-button {
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-account-button:hover {
+  background-color: #218838;
+}
+
+.add-account-form {
+  margin-top: 10px;
+}
+
+.add-account-form input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.submit-button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+  background-color: #0056b3;
 }
 
 .account-item {
@@ -90,104 +114,70 @@
   margin-top: 10px;
 }
 
-.email,
+.account-info {
+  margin-bottom: 10px;
+}
+/* User.css */
+
+/* Add styles for the email and password text */
+.account-info div {
+  margin-bottom: 8px;
+}
+
+.email, .password {
+  font-size: 16px; /* Adjust the font size */
+  font-weight: bold; /* Optionally, make the text bold */
+  color: #333; /* Optionally, change the text color */
+}
+
 .password {
-  font-size: 18px; /* Increased font size */
-  margin-bottom: 5px;
+  color: #666; /* Optionally, differentiate the password text color */
 }
 
-.no-passwords {
-  font-size: 20px; /* Increased font size */
-  color: #999;
-}
-
-.add-account-button {
-  background-color: #28a745;
-  color: #fff;
+.show-password-button {
+  background-color: transparent;
   border: none;
-  padding: 12px 24px; /* Adjusted padding */
+  color: #007bff;
+  cursor: pointer;
+}
+
+.show-password-button:hover {
+  color: #0056b3;
+}
+
+.account-actions button {
+  background-color: #c77b7b;
+  color: #000000;
+  border: none;
+  padding: 8px 16px;
   border-radius: 8px;
   cursor: pointer;
-  margin-bottom: 10px;
+  margin-right: 10px;
   transition: background-color 0.3s ease;
 }
 
-.add-account-button:hover {
-  background-color: #882121;
-}
-
-.add-account-form {
-  margin-top: 10px;
-}
-
-.add-account-form input {
-  width: calc(100% - 24px);
-  padding: 14px; /* Adjusted padding */
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-}
-
-.submit {
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  padding: 14px 28px; /* Adjusted padding */
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.submit:hover {
-  background-color: #0056b3;
-}
-
-.delete-button,
-.edit-button {
-  background-color: #dc3545; /* Change button color */
-  color: #fff;
-  border: none;
-  padding: 10px 20px; /* Adjusted padding */
-  border-radius: 8px;
-  cursor: pointer;
-  margin-right: 10px; /* Add margin between buttons */
-  transition: background-color 0.3s ease;
-}
-
-.delete-button:hover,
-.edit-button:hover {
-  background-color: #c82333; /* Change button color on hover */
-}
-
-.edit-form {
-  margin-top: 10px;
+.account-actions button:hover {
+  background-color: rgba(173, 141, 106, 0.2);
 }
 
 .edit-form input {
-  width: calc(100% - 24px);
-  padding: 14px; /* Adjusted padding */
+  width: 100%;
+  padding: 12px;
   margin-bottom: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid #ad0a0a;
   border-radius: 8px;
 }
 
-.submit {
+.submit-button {
   background-color: #007bff;
   color: #fff;
   border: none;
-  padding: 14px 28px; /* Adjusted padding */
+  padding: 12px 24px;
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
-.submit:hover {
-  background-color: #0056b3;
-}
-
-
-@media (max-width: 768px) {
-  .container {
-    width: 90%;
-  }
+.submit-button:hover {
+  background-color: #0c73b6;
 }

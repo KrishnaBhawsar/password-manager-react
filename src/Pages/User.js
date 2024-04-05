@@ -27,11 +27,9 @@ function User() {
                         Authorization: `Bearer ${token}` // Set the Authorization header with the token
                     }
                 });
-                console.log(response);
                 setContainers(response.data);
                 setLoading(false);
             } catch (error) {
-                console.log("error in fetching data", error.message);
                 setError("Error fetching data. Please try again later.");
                 setLoading(false);
             }
@@ -46,16 +44,13 @@ function User() {
     const handleAddAccount = (containerId) => {
         const token = localStorage.getItem('token');
         try {
-            const response = axios.post("https://passwordmanager-07xe.onrender.com/account/add", { email, password, containerId }, {
+            axios.post("https://passwordmanager-07xe.onrender.co/account/add", { email, password, containerId }, {
                 headers: {
                     Authorization: `Bearer ${token}` // Set the Authorization header with the token
                 }
             });
-            console.log(response.data);
-            // Optionally, you can update the state or perform other actions upon successful submission
         } catch (error) {
             console.log("error in adding account", error.message);
-            // Optionally, handle the error or display a message to the user
         }
     };
 
@@ -78,17 +73,13 @@ function User() {
     const handleEditAccount = async (accountId) => {
         const token = localStorage.getItem('token');
         try {
-            console.log(editEmail,editPassword,accountId);
             axios.put('https://passwordmanager-07xe.onrender.com/account/edit', { email: editEmail, password: editPassword, accountId: accountId}, {
                 headers: {
                     Authorization: `Bearer ${token}` // Set the Authorization header with the token
                 }
-            }).then((response)=>{
-                console.log(response);
-            })
+            });
         } catch (error) {
             console.log("error in editing account", error.message);
-            // Optionally, handle the error or display a message to the user
         }
     };
 
@@ -104,19 +95,14 @@ function User() {
     const handleDeleteAccount = async (accountId) => {
         const token = localStorage.getItem('token');
         try {
-            console.log(accountId);
-            axios.delete(`https://passwordmanager-07xe.onrender.com/account/delete`, {
+            axios.delete(`https://passwordmanager-07xe.onrender.co/account/delete`, {
                 params:{accountId:accountId},
                 headers: {
                     Authorization: `Bearer ${token}` // Set the Authorization header with the token
                 }
-            }).then((response)=>{
-                console.log(response);
-            })
-            // Optionally, you can update the state or perform other actions upon successful deletion
+            });
         } catch (error) {
             console.log("error in deleting account", error.message);
-            // Optionally, handle the error or display a message to the user
         }
     };
 
@@ -125,66 +111,61 @@ function User() {
     if (error)
         return <div>Error: {error}</div>;
     return (
-        <div className="container">
-            <div>Account Owner: {accountOwner}</div>
-            <button className="add-button" onClick={handleAddContainer}>
-                <i className="fas fa-plus"></i> New Container
-            </button>
-            <h2 className="heading">Saved Passwords</h2>
-            {containers.length === 0 ? (
-                <p className="no-passwords">No saved passwords</p>
-            ) : (
-                <ul className="list">
-                    {containers.map(container => (
-                        <li key={container.id} className="container-item">
-                            <div className="website" onClick={() => setSelectedContainer(selectedContainer === container.id ? null : container.id)}>
-                                <span>{container.websiteUrl}</span>
-                                {selectedContainer === container.id ? (
-                                    <i className="fas fa-chevron-up"></i>
-                                ) : (
-                                    <i className="fas fa-chevron-down"></i>
+        <div className="user-container">
+            <div className="user-header">
+                <h2>Welcome, {accountOwner}!</h2>
+                <button className="add-container-button" onClick={handleAddContainer}>Add Container</button>
+            </div>
+            <div className="container-list">
+                {containers.map(container => (
+                    <div key={container.id} className="container-item">
+                        <div className="container-header" onClick={() => setSelectedContainer(selectedContainer === container.id ? null : container.id)}>
+                            <span>{container.websiteUrl}</span>
+                            <i className={selectedContainer === container.id ? "fas fa-chevron-up" : "fas fa-chevron-down"}></i>
+                        </div>
+                        {selectedContainer === container.id && (
+                            <div className="account-list">
+                                <button className="add-account-button" onClick={() => setAddingAccount(!addingAccount)}>
+                                    {addingAccount ? 'Cancel' : 'Add Account'}
+                                </button>
+                                {addingAccount && (
+                                    <div className="add-account-form">
+                                        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
+                                        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
+                                        <button className="submit-button" onClick={() => handleAddAccount(container.id)}>Submit</button>
+                                    </div>
                                 )}
-                            </div>
-                            {selectedContainer === container.id && (
-                                <div className="accounts-container">
-                                    <button className="add-account-button" onClick={() => {
-                                        setAddingAccount(!addingAccount);
-                                    }}>{addingAccount ? 'Cancel' : 'Add Account'}</button>
-                                    {addingAccount && (
-                                        <div className="add-account-form">
-                                            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
-                                            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
-                                            <button className="submit" onClick={() => handleAddAccount(container.id)}>Submit</button>
-                                        </div>
-                                    )}
-                                    <ul className="accounts">
-                                        {container.accounts.map(account => (
-                                            <li key={account.id} className="account-item">
+                                <ul className="account-list">
+                                    {container.accounts.map(account => (
+                                        <li key={account.id} className="account-item">
+                                            <div className="account-info">
                                                 <div className="email">Email: {account.email}</div>
                                                 <div className="password">
                                                     Password: {account.showPassword ? account.password : '********'}
-                                                    <button className="show-password" onClick={() => togglePasswordVisibility(container.id, account.id)}>
+                                                    <button className="show-password-button" onClick={() => togglePasswordVisibility(container.id, account.id)}>
                                                         {account.showPassword ? 'Hide' : 'Show'}
                                                     </button>
                                                 </div>
-                                                <button className="edit-button" onClick={() => openEditForm(account.id)}>Edit</button>
-                                                <button className="delete-button" onClick={() => handleDeleteAccount(account.id)}>Delete</button>
-                                                {editAccountId === account.id && (
-                                                    <div className="edit-form">
-                                                        <input type="email" value={editEmail} onChange={(e) => setEditEmail(e.target.value)} placeholder="New Email" />
-                                                        <input type="password" value={editPassword} onChange={(e) => setEditPassword(e.target.value)} placeholder="New Password" />
-                                                        <button className="submit" onClick={() => handleEditAccount(account.id)}>Save</button>
-                                                    </div>
-                                                )}
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            )}
-                        </li>
-                    ))}
-                </ul>
-            )}
+                                            </div>
+                                            <div className="account-actions">
+                                                <button className="edit-account-button" onClick={() => openEditForm(account.id)}>Edit</button>
+                                                <button className="delete-account-button" onClick={() => handleDeleteAccount(account.id)}>Delete</button>
+                                            </div>
+                                            {editAccountId === account.id && (
+                                                <div className="edit-form">
+                                                    <input type="email" value={editEmail} onChange={(e) => setEditEmail(e.target.value)} placeholder="New Email" />
+                                                    <input type="password" value={editPassword} onChange={(e) => setEditPassword(e.target.value)} placeholder="New Password" />
+                                                    <button className="submit-button" onClick={() => handleEditAccount(account.id)}>Save</button>
+                                                </div>
+                                            )}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+                    </div>
+                ))}
+            </div>
         </div>
     );
 }
