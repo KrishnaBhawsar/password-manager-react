@@ -49,6 +49,8 @@
   background-color: #fff;
   border-radius: 8px;
   margin-bottom: 20px;
+  margin-left: 0;
+  margin-right: 0;
   padding: 20px;
   cursor: pointer;
   transition: box-shadow 0.3s ease;
@@ -62,21 +64,27 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-left: 0;
   cursor: pointer;
 }
 
 .container-header span {
   font-size: 20px;
+  margin-left: 0;
   color: #007bff;
 }
 
-.account-list {
+.account-info {
   margin-top: 10px;
-  margin-left: 5px;
+  margin-left: 0;
+}
+
+.account-list {
+  margin-left: 0;
 }
 
 .add-account-button {
-  background-color: #28a745;
+  background-color: #024f6b;
   color: #fff;
   border: none;
   padding: 10px 20px;
@@ -86,11 +94,12 @@
 }
 
 .add-account-button:hover {
-  background-color: #fc0000;
+  background-color: #023142;
 }
 
 .add-account-form {
   margin-top: 10px;
+  margin-bottom: 5px;
 }
 
 .add-account-form input {
@@ -155,7 +164,7 @@
   padding: 8px 16px;
   border-radius: 20px;
   cursor: pointer;
-  margin-right: 20px;
+  margin-right: 10px;
   transition: background-color 0.3s ease;
 }
 

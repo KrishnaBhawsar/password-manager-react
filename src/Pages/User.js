@@ -173,43 +173,55 @@ function User() {
                             <i className={selectedContainer === container.id ? "fas fa-chevron-up" : "fas fa-chevron-down"}></i>
                         </div>
                         {selectedContainer === container.id && (
-                            <div className="account-list">
-                                <button className="add-account-button" onClick={() => setAddingAccount(!addingAccount)}>
-                                    {addingAccount ? 'Cancel' : 'Add Account'}
-                                </button>
-                                {addingAccount && (
-                                    <div className="add-account-form">
-                                        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
-                                        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
-                                        {addLoading ? (<div>Loading...</div>) : (<button className="submit-button" onClick={() => handleAddAccount(container.id)}>Submit</button>)}
-                                    </div>
-                                )}
-                                <ul className="account-list">
+                            <div className="account-info">
+                                <ul className="account-info">
                                     {container.accounts.map(account => (
                                         <ul key={account.id} className="account-item">
                                             <div className="account-info">
                                                 <div className="email">Email: {account.email}</div>
                                                 <div className="password">
                                                     Password: {account.showPassword ? account.password : '********'}
-                                                    <button className="show-password-button" onClick={() => togglePasswordVisibility(container.id, account.id)}>
+                                                    <button className="show-password-button"
+                                                            onClick={() => togglePasswordVisibility(container.id, account.id)}>
                                                         {account.showPassword ? 'Hide' : 'Show'}
                                                     </button>
                                                 </div>
                                             </div>
                                             <div className="account-actions">
-                                                <button className="edit-account-button" onClick={() => openEditForm(account.id)}>Edit</button>
-                                                <button className="delete-account-button" onClick={() => handleDeleteAccount(account.id)}>{deleteLoading ? 'Loading...' : 'Delete'}</button>
+                                                <button className="edit-account-button"
+                                                        onClick={() => openEditForm(account.id)}>Edit
+                                                </button>
+                                                <button className="delete-account-button"
+                                                        onClick={() => handleDeleteAccount(account.id)}>{deleteLoading ? 'Loading...' : 'Delete'}</button>
                                             </div>
                                             {editAccountId === account.id && (
                                                 <div className="edit-form">
-                                                    <input type="email" value={editEmail} onChange={(e) => setEditEmail(e.target.value)} placeholder="New Email" />
-                                                    <input type="password" value={editPassword} onChange={(e) => setEditPassword(e.target.value)} placeholder="New Password" />
-                                                    <button className="submit-button" onClick={() => handleEditAccount(account.id)}>{editLoading ? 'Loading...' : 'Save'}</button>
+                                                    <input type="email" value={editEmail}
+                                                           onChange={(e) => setEditEmail(e.target.value)}
+                                                           placeholder="New Email"/>
+                                                    <input type="password" value={editPassword}
+                                                           onChange={(e) => setEditPassword(e.target.value)}
+                                                           placeholder="New Password"/>
+                                                    <button className="submit-button"
+                                                            onClick={() => handleEditAccount(account.id)}>{editLoading ? 'Loading...' : 'Save'}</button>
                                                 </div>
                                             )}
                                         </ul>
                                     ))}
                                 </ul>
+                                {addingAccount && (
+                                    <div className="add-account-form">
+                                        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)}
+                                               placeholder="Email"/>
+                                        <input type="password" value={password}
+                                               onChange={(e) => setPassword(e.target.value)} placeholder="Password"/>
+                                        {addLoading ? (<div>Loading...</div>) : (<button className="submit-button"
+                                                                                         onClick={() => handleAddAccount(container.id)}>Submit</button>)}
+                                    </div>
+                                )}
+                                <button className="add-account-button" onClick={() => setAddingAccount(!addingAccount)}>
+                                    {addingAccount ? 'Cancel' : 'Add Account'}
+                                </button>
                             </div>
                         )}
                     </div>
