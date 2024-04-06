@@ -5,6 +5,9 @@ import './User.css'; // Import CSS file for styling
 import { useNavigate } from "react-router-dom";
 
 function User() {
+
+    const API_URL= process.env.REACT_APP_API_URL;
+
     const navigate = useNavigate();
     const [containers, setContainers] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -30,7 +33,7 @@ function User() {
     const fetchData = async () => {
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.get("https://passwordmanager-07xe.onrender.com/user/get-all-container", {
+            const response = await axios.get(`${API_URL}/user/get-all-container`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -51,7 +54,7 @@ function User() {
         setAddLoading(true);
         try {
             const token = localStorage.getItem('token');
-            await axios.post("https://passwordmanager-07xe.onrender.com/account/add", { email, password, containerId }, {
+            await axios.post(`${API_URL}/account/add`, { email, password, containerId }, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -84,7 +87,7 @@ function User() {
         setEditLoading(true);
         try {
             const token = localStorage.getItem('token');
-            await axios.put('https://passwordmanager-07xe.onrender.com/account/edit', { email: editEmail, password: editPassword, accountId }, {
+            await axios.put(`${API_URL}/account/edit`, { email: editEmail, password: editPassword, accountId }, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -111,7 +114,7 @@ function User() {
         setDeleteLoading(true);
         try {
             const token = localStorage.getItem('token');
-            await axios.delete(`https://passwordmanager-07xe.onrender.com/account/delete`, {
+            await axios.delete(`${API_URL}/account/delete`, {
                 params: { accountId },
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -129,7 +132,7 @@ function User() {
         setLogoutLoading(true);
         try {
             const token = localStorage.getItem('token');
-            await axios.post("https://passwordmanager-07xe.onrender.com/user/logout", {}, {
+            await axios.post(`${API_URL}/user/logout`, {}, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }

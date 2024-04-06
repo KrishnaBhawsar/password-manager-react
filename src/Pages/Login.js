@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import './Login.css'; // Import CSS file
 
 function Login() {
+    const API_URL= process.env.REACT_APP_API_URL;
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -13,16 +14,11 @@ function Login() {
     const navigate = useNavigate();
 
     const handleLogin = () => {
-        // Basic form validation
-        if (!username.trim() || !password.trim()) {
-            setError('Please fill out all fields');
-            return;
-        }
-
         // Set loading to true when making the request
         setLoading(true);
+        console.log(API_URL);
 
-        axios.post("https://passwordmanager-07xe.onrender.com/login",{
+        axios.post(`${API_URL}/login`,{
             username, password
         }).then((response)=>{
             console.log(response);
@@ -57,11 +53,11 @@ function Login() {
             <form>
                 <div className="form-group">
                     <input
-                        type="text"
+                        type="email"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                         className="input-field"
-                        placeholder="Username"
+                        placeholder="Email"
                         required
                     />
                 </div>

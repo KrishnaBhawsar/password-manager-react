@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import './Signup.css'; // Import CSS file
 
 function Signup() {
+    const API_URL= process.env.REACT_APP_API_URL;
+
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -17,7 +19,6 @@ function Signup() {
             setError('Please fill out all fields');
             return;
         }
-
         if (password !== confirmPassword) {
             setError('Passwords do not match');
             return;
@@ -26,12 +27,14 @@ function Signup() {
         // Set loading to true when making the request
         setLoading(true);
 
-        axios.post("https://passwordmanager-07xe.onrender.com/user/signup", {
+        axios.post(`${API_URL}/user/signup`, {
             username, password
         }).then((response) => {
             console.log(response);
             if (response.data.username === 'USER_ALREADY_EXIST') {
                 setError("User already exists");
+            } else if(response.data.username==='INVALID_EMAIL') {
+                setError("Invalid email address");
             } else {
                 setSignupSuccess(true);
             }
@@ -59,11 +62,11 @@ function Signup() {
             <form>
                 <div className="form-group">
                     <input
-                        type="text"
+                        type="email"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                         className="input-field"
-                        placeholder="Username"
+                        placeholder="Email"
                         required
                     />
                 </div>

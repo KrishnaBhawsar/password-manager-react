@@ -23,7 +23,7 @@
 }
 
 .user-header h2 {
-  font-size: 24px;
+  font-size: 20px;
   color: #333;
 }
 
@@ -137,6 +137,7 @@
   margin-top: 10px;
   margin-bottom: 10px;
   margin-right: -55px;
+
 }
 
 .account-info {
@@ -144,6 +145,7 @@
   margin-bottom: 5px;
   margin-right: 5px;
   margin-left: -25px;
+  font-size: large;
 }
 .account-info-sub {
   margin-top: 10px;
@@ -229,4 +231,16 @@
 
 .logout-button:hover {
   background-color: #ad0a0a;
+}
+
+.email {
+  font-size: 14px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.password {
+  font-size: 14px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.title-name {
+  font-size: 70px;
 }
