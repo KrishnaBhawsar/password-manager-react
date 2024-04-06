@@ -91,7 +91,7 @@
   border-radius: 20px;
   margin-left: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.2s ease;
 }
 .add-account-button-div {
   margin-left: 45px;
