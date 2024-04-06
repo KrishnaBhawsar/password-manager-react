@@ -1,7 +1,6 @@
-/* AddContainer.css */
-
 .add-container {
-    width: 50%;
+    width: 90%;
+    max-width: 600px; /* Adjusted maximum width for responsiveness */
     margin: auto;
     padding: 20px;
     font-family: Arial, sans-serif;
@@ -63,9 +62,9 @@
     font-size: 16px;
 }
 
-/* AddContainer.css */
-
-.add-account {
+/* Button styling */
+.add-account,
+.submit {
     background-color: #007bff;
     color: #fff;
     border: none;
@@ -74,25 +73,21 @@
     cursor: pointer;
     transition: background-color 0.3s ease;
     font-size: 16px;
-    margin-bottom: 10px; /* Add margin-bottom to create space */
+    margin-bottom: 10px;
 }
 
-.submit {
-    background-color: #28a745;
-    color: #fff;
-    border: none;
-    padding: 12px 24px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    font-size: 16px;
-}
-
-
-.add-account:hover {
+.add-account:hover,
+.submit:hover {
     background-color: #0056b3;
 }
 
-.submit:hover {
-    background-color: #218838;
+.show-password {
+    background-color: transparent;
+    border: none;
+    color: #007bff;
+    cursor: pointer;
+}
+
+.show-password:hover {
+    color: #0056b3;
 }
