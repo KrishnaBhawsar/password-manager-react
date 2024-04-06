@@ -124,6 +124,20 @@ function User() {
         }
     };
 
+    const handleLogout = () => {
+        const token = localStorage.getItem('token');
+        axios.post("http://passwordmanager-07xe.onrender.com/user/logout", {},{
+            headers:{
+                Authorization: `Bearer ${token}`
+            }
+        }).then((response)=>{
+            if(response.data.message==='LOGOUT_SUCCESSFULLY') {
+                navigate('/login');
+            }
+        })
+    };
+
+
     if (loading)
         return <div>Loading....</div>;
     if (error)
@@ -196,6 +210,7 @@ function User() {
                     </div>
                 ))}
             </div>
+            <button onClick={() => handleLogout()}>Logout</button>
         </div>
     );
 }
