@@ -7,6 +7,7 @@ function User() {
     const navigate = useNavigate();
     const [containers, setContainers] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [editLoading, setEditLoading] = useState(false); // State to manage loading during edit
     const [error, setError] = useState(null);
     const [selectedContainer, setSelectedContainer] = useState(null); // State to store the selected container
     const [addingAccount, setAddingAccount] = useState(false); // State to indicate if user is adding a new account
@@ -71,15 +72,20 @@ function User() {
     };
 
     const handleEditAccount = async (accountId) => {
+        setEditLoading(true); // Set loading state to true during edit
         const token = localStorage.getItem('token');
         try {
-            axios.put('https://passwordmanager-07xe.onrender.com/account/edit', { email: editEmail, password: editPassword, accountId: accountId}, {
+            await axios.put('https://passwordmanager-07xe.onrender.com/account/edit', { email: editEmail, password: editPassword, accountId: accountId}, {
                 headers: {
                     Authorization: `Bearer ${token}` // Set the Authorization header with the token
                 }
             });
+            setEditLoading(false); // Set loading state to false after response received
+            // Reload the page
+            window.location.reload();
         } catch (error) {
             console.log("error in editing account", error.message);
+            setEditLoading(false); // Set loading state to false if error occurs
         }
     };
 
@@ -155,7 +161,11 @@ function User() {
                                                 <div className="edit-form">
                                                     <input type="email" value={editEmail} onChange={(e) => setEditEmail(e.target.value)} placeholder="New Email" />
                                                     <input type="password" value={editPassword} onChange={(e) => setEditPassword(e.target.value)} placeholder="New Password" />
-                                                    <button className="submit-button" onClick={() => handleEditAccount(account.id)}>Save</button>
+                                                    {editLoading ? ( // Show loading during edit
+                                                        <div>Loading...</div>
+                                                    ) : (
+                                                        <button className="submit-button" onClick={() => handleEditAccount(account.id)}>Save</button>
+                                                    )}
                                                 </div>
                                             )}
                                         </li>
