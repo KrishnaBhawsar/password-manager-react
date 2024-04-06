@@ -29,16 +29,20 @@ function AddContainer() {
     };
 
     const handleSubmit = async () => {
-        try {
-            const token = localStorage.getItem('token');
-            await axios.post("https://passwordmanager-07xe.onrender.com/container/add", { websiteUrl, accounts }, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
-            navigate("/user");
-        } catch (error) {
-            console.log("error in creating container", error.message);
+        if(websiteUrl!=='') {
+            try {
+                const token = localStorage.getItem('token');
+                await axios.post("https://passwordmanager-07xe.onrender.com/container/add", { websiteUrl, accounts }, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                navigate("/user");
+            } catch (error) {
+                console.log("error in creating container", error.message);
+            }
+        } else {
+            window.alert("website url is mandatory");
         }
     };
 
