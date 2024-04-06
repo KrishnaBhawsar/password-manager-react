@@ -173,8 +173,8 @@ function User() {
                             <i className={selectedContainer === container.id ? "fas fa-chevron-up" : "fas fa-chevron-down"}></i>
                         </div>
                         {selectedContainer === container.id && (
-                            <div className="account-info">
-                                <ul className="account-info">
+                            <   div className="account-info-sub">
+                                <ul>
                                     {container.accounts.map(account => (
                                         <ul key={account.id} className="account-item">
                                             <div className="account-info">
@@ -219,9 +219,13 @@ function User() {
                                                                                          onClick={() => handleAddAccount(container.id)}>Submit</button>)}
                                     </div>
                                 )}
-                                <button className="add-account-button" onClick={() => setAddingAccount(!addingAccount)}>
-                                    {addingAccount ? 'Cancel' : 'Add Account'}
-                                </button>
+                                <div className="add-account-button-div">
+                                    <button className="add-account-button"
+                                            onClick={() => setAddingAccount(!addingAccount)}>
+                                        {addingAccount ? 'Cancel' : 'Add Account'}
+                                    </button>
+                                </div>
+
                             </div>
                         )}
                     </div>
