@@ -25,11 +25,6 @@ function User() {
     const [editAccountId, setEditAccountId] = useState(null);
     const [accountOwner, setAccountOwner] = useState('');
 
-    useEffect(() => {
-        setAccountOwner(localStorage.getItem('username'));
-        fetchData();
-    }, []);
-
     const fetchData = async () => {
         try {
             const token = localStorage.getItem('token');
@@ -45,6 +40,11 @@ function User() {
             setLoading(false);
         }
     };
+
+    useEffect(() => {
+        setAccountOwner(localStorage.getItem('username'));
+        fetchData();
+    }, []);
 
     const handleAddContainer = () => {
         navigate("/user/add-container");
@@ -155,7 +155,7 @@ function User() {
     return (
         <div className="user-container">
             <div className="user-header">
-                <h2>Welcome, {accountOwner}!</h2>
+                <h2>{accountOwner}!</h2>
                 <button className="add-container-button" onClick={handleAddContainer}>Add Container</button>
             </div>
             <div className="container-list">

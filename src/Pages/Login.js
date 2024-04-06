@@ -15,6 +15,7 @@ function Login() {
 
     const handleLogin = () => {
         // Set loading to true when making the request
+        setError('');
         setLoading(true);
         console.log(API_URL);
 

@@ -25,6 +25,9 @@
 .user-header h2 {
   font-size: 20px;
   color: #333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .add-container-button {

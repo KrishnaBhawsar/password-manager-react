@@ -14,6 +14,7 @@ function Signup() {
     const [loading, setLoading] = useState(false); // State to track loading status
 
     const handleSignup = () => {
+        setError('');
         // Basic form validation
         if (!username.trim() || !password.trim() || !confirmPassword.trim()) {
             setError('Please fill out all fields');
@@ -48,6 +49,7 @@ function Signup() {
     };
 
     const handleConfirmPasswordChange = (e) => {
+        setError('');
         setConfirmPassword(e.target.value);
         if (password !== e.target.value) {
             setError('Passwords do not match');
