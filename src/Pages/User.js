@@ -186,7 +186,7 @@ function User() {
                                 )}
                                 <ul className="account-list">
                                     {container.accounts.map(account => (
-                                        <li key={account.id} className="account-item">
+                                        <ul key={account.id} className="account-item">
                                             <div className="account-info">
                                                 <div className="email">Email: {account.email}</div>
                                                 <div className="password">
@@ -207,7 +207,7 @@ function User() {
                                                     <button className="submit-button" onClick={() => handleEditAccount(account.id)}>{editLoading ? 'Loading...' : 'Save'}</button>
                                                 </div>
                                             )}
-                                        </li>
+                                        </ul>
                                     ))}
                                 </ul>
                             </div>
