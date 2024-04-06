@@ -1,15 +1,14 @@
 // AddContainer.js
-
 import React, { useState } from 'react';
 import axios from 'axios';
 import './AddContainer.css'; // Import CSS file for styling
 import { useNavigate } from "react-router-dom";
 
 function AddContainer() {
-    const navigate=useNavigate();
+    const navigate = useNavigate();
     const [websiteUrl, setWebsiteUrl] = useState('');
-    const [accounts, setAccounts] = useState([]); // Initialize accounts state as an empty array
-    const [showPassword, setShowPassword] = useState(false); // State to manage password visibility
+    const [accounts, setAccounts] = useState([{ email: '', password: '' }]);
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleAddAccount = () => {
         setAccounts([...accounts, { email: '', password: '' }]);
@@ -26,22 +25,21 @@ function AddContainer() {
     };
 
     const handleShowPassword = () => {
-        setShowPassword(!showPassword); // Toggle password visibility
+        setShowPassword(!showPassword);
     };
 
-    const handleSubmit = () => {
-        const token = localStorage.getItem('token');
-        axios.post("https://passwordmanager-07xe.onrender.com/container/add",{ websiteUrl, accounts}, {
-            headers: {
-                Authorization: `Bearer ${token}` // Set the Authorization header with the token
-            }
-        }).then((response)=>{
-            console.log(response);
-            navigate("/user")
-        }).catch((exception)=>{
-            console.log("error in creating container");
-        });
-        console.log({ websiteUrl, accounts });
+    const handleSubmit = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            await axios.post("https://passwordmanager-07xe.onrender.com/container/add", { websiteUrl, accounts }, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            navigate("/user");
+        } catch (error) {
+            console.log("error in creating container", error.message);
+        }
     };
 
     return (
@@ -56,8 +54,10 @@ function AddContainer() {
                         <label>Email:</label>
                         <input type="text" value={account.email} onChange={(e) => handleAccountChange(index, 'email', e.target.value)} />
                         <label>Password:</label>
-                        <input type={showPassword ? "text" : "password"} value={account.password} onChange={(e) => handleAccountChange(index, 'password', e.target.value)} />
-                        <button className="show-password" onClick={handleShowPassword}>{showPassword ? "Hide" : "Show"} Password</button>
+                        <div className="password-input">
+                            <input type={showPassword ? "text" : "password"} value={account.password} onChange={(e) => handleAccountChange(index, 'password', e.target.value)} />
+                            <button className="show-password" onClick={handleShowPassword}>{showPassword ? "Hide" : "Show"}</button>
+                        </div>
                     </div>
                 ))}
                 <button className="add-account" onClick={handleAddAccount}>Add Account</button>

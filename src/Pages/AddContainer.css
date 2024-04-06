@@ -1,10 +1,11 @@
+/* AddContainer.css */
 .add-container {
     width: 90%;
-    max-width: 600px; /* Adjusted maximum width for responsiveness */
+    max-width: 600px;
     margin: auto;
     padding: 20px;
     font-family: Arial, sans-serif;
-    background-color: #f7f7f7;
+    background-color: #f9f9f9;
     border-radius: 10px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 }
@@ -54,7 +55,7 @@
 }
 
 .account input {
-    width: calc(100% - 10px); /* Adjust width to accommodate labels */
+    width: calc(100% - 10px);
     padding: 12px;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -65,7 +66,7 @@
 /* Button styling */
 .add-account,
 .submit {
-    background-color: #007bff;
+    background-color: #2241b2;
     color: #fff;
     border: none;
     padding: 12px 24px;
@@ -78,7 +79,7 @@
 
 .add-account:hover,
 .submit:hover {
-    background-color: #0056b3;
+    background-color: #0f850f;
 }
 
 .show-password {
@@ -90,4 +91,28 @@
 
 .show-password:hover {
     color: #0056b3;
+}
+/* AddContainer.css */
+/* Existing styles */
+.password-input {
+    position: relative;
+}
+
+.password-input input {
+    width: calc(100% - 40px); /* Adjust width to accommodate the button */
+}
+
+.password-input .show-password {
+    position: absolute;
+    top: 40%;
+    right: 50px;
+    transform: translateY(-50%);
+    background-color: transparent;
+    border: none;
+    color: #007bff;
+    cursor: pointer;
+}
+
+.password-input .show-password:hover {
+    color: #007aff;
 }

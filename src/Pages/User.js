@@ -1,3 +1,4 @@
+// Import necessary modules and components
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './User.css'; // Import CSS file for styling
@@ -7,60 +8,69 @@ function User() {
     const navigate = useNavigate();
     const [containers, setContainers] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [addLoading, setAddLoading] = useState(false); // State to manage loading during add
-    const [editLoading, setEditLoading] = useState(false); // State to manage loading during edit
-    const [deleteLoading, setDeleteLoading] = useState(false); // State to manage loading during delete
-    const [logoutLoading, setLogoutLoading] = useState(false); // State to manage loading during logout
     const [error, setError] = useState(null);
-    const [selectedContainer, setSelectedContainer] = useState(null); // State to store the selected container
-    const [addingAccount, setAddingAccount] = useState(false); // State to indicate if user is adding a new account
+    const [selectedContainer, setSelectedContainer] = useState(null);
+    const [addingAccount, setAddingAccount] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [addLoading, setAddLoading] = useState(false);
+    const [deleteLoading, setDeleteLoading] = useState(false);
+    const [editLoading, setEditLoading] = useState(false);
+    const [logoutLoading, setLogoutLoading] = useState(false);
     const [editEmail, setEditEmail] = useState('');
     const [editPassword, setEditPassword] = useState('');
-    const [editAccountId, setEditAccountId] = useState(null); // State to store the ID of the account being edited
+    const [editAccountId, setEditAccountId] = useState(null);
     const [accountOwner, setAccountOwner] = useState('');
 
     useEffect(() => {
         setAccountOwner(localStorage.getItem('username'));
-        const fetchData = async () => {
-            const token = localStorage.getItem('token');
-            try {
-                const response = await axios.get("https://passwordmanager-07xe.onrender.com/user/get-all-container", {
-                    headers: {
-                        Authorization: `Bearer ${token}` // Set the Authorization header with the token
-                    }
-                });
-                setContainers(response.data);
-                setLoading(false);
-            } catch (error) {
-                setError("Error fetching data. Please try again later.");
-                setLoading(false);
-            }
-        };
         fetchData();
     }, []);
+
+    const fetchData = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await axios.get("https://passwordmanager-07xe.onrender.com/user/get-all-container", {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            setContainers(response.data);
+            setLoading(false);
+        } catch (error) {
+            setError("Error fetching data. Please try again later.");
+            setLoading(false);
+        }
+    };
 
     const handleAddContainer = () => {
         navigate("/user/add-container");
     };
 
     const handleAddAccount = async (containerId) => {
-        setAddLoading(true); // Set loading state to true during add
-        const token = localStorage.getItem('token');
+        if (!validateForm()) return;
+        setAddLoading(true);
         try {
+            const token = localStorage.getItem('token');
             await axios.post("https://passwordmanager-07xe.onrender.com/account/add", { email, password, containerId }, {
                 headers: {
-                    Authorization: `Bearer ${token}` // Set the Authorization header with the token
+                    Authorization: `Bearer ${token}`
                 }
             });
-            setAddLoading(false); // Set loading state to false after response received
-            // Reload the page
+            setAddLoading(false);
             window.location.reload();
         } catch (error) {
             console.log("error in adding account", error.message);
-            setAddLoading(false); // Set loading state to false if error occurs
+            setAddLoading(false);
         }
+    };
+
+    const validateForm = () => {
+        if (!email.trim() || !password.trim()) {
+            setError("Email and password are required.");
+            return false;
+        }
+        return true;
     };
 
     const togglePasswordVisibility = (containerId, accountId) => {
@@ -80,20 +90,20 @@ function User() {
     };
 
     const handleEditAccount = async (accountId) => {
-        setEditLoading(true); // Set loading state to true during edit
-        const token = localStorage.getItem('token');
+        if (!validateForm()) return;
+        setEditLoading(true);
         try {
-            await axios.put('https://passwordmanager-07xe.onrender.com/account/edit', { email: editEmail, password: editPassword, accountId: accountId}, {
+            const token = localStorage.getItem('token');
+            await axios.put('https://passwordmanager-07xe.onrender.com/account/edit', { email: editEmail, password: editPassword, accountId }, {
                 headers: {
-                    Authorization: `Bearer ${token}` // Set the Authorization header with the token
+                    Authorization: `Bearer ${token}`
                 }
             });
-            setEditLoading(false); // Set loading state to false after response received
-            // Reload the page
+            setEditLoading(false);
             window.location.reload();
         } catch (error) {
             console.log("error in editing account", error.message);
-            setEditLoading(false); // Set loading state to false if error occurs
+            setEditLoading(false);
         }
     };
 
@@ -107,47 +117,48 @@ function User() {
     };
 
     const handleDeleteAccount = async (accountId) => {
-        setDeleteLoading(true); // Set loading state to true during delete
-        const token = localStorage.getItem('token');
+        if (!window.confirm("Are you sure you want to delete this account?")) return;
+        setDeleteLoading(true);
         try {
+            const token = localStorage.getItem('token');
             await axios.delete(`https://passwordmanager-07xe.onrender.com/account/delete`, {
-                params:{accountId:accountId},
+                params: { accountId },
                 headers: {
-                    Authorization: `Bearer ${token}` // Set the Authorization header with the token
+                    Authorization: `Bearer ${token}`
                 }
             });
-            setDeleteLoading(false); // Set loading state to false after response received
-            // Reload the page
+            setDeleteLoading(false);
             window.location.reload();
         } catch (error) {
             console.log("error in deleting account", error.message);
-            setDeleteLoading(false); // Set loading state to false if error occurs
+            setDeleteLoading(false);
         }
     };
 
-    const handleLogout = () => {
-        setLogoutLoading(true); // Set loading state to true during logout
-        const token = localStorage.getItem('token');
-        axios.post("https://passwordmanager-07xe.onrender.com/user/logout", {},{
-            headers:{
-                Authorization: `Bearer ${token}`
-            }
-        }).then((response)=>{
-            setLogoutLoading(false); // Set loading state to false after response received
-            if(response.data.message==='LOGOUT_SUCCESSFULLY') {
-                navigate('/login');
-            }
-        }).catch(error => {
+    const handleLogout = async () => {
+        setLogoutLoading(true);
+        try {
+            const token = localStorage.getItem('token');
+            await axios.post("https://passwordmanager-07xe.onrender.com/user/logout", {}, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            setLogoutLoading(false);
+            localStorage.removeItem('token');
+            localStorage.removeItem('username');
+            navigate('/login');
+        } catch (error) {
             console.log("error in logout", error.message);
-            setLogoutLoading(false); // Set loading state to false if error occurs
-        });
+            setLogoutLoading(false);
+        }
     };
-
 
     if (loading)
         return <div>Loading....</div>;
     if (error)
         return <div>Error: {error}</div>;
+
     return (
         <div className="user-container">
             <div className="user-header">
@@ -157,8 +168,7 @@ function User() {
             <div className="container-list">
                 {containers.map(container => (
                     <div key={container.id} className="container-item">
-                        <div className="container-header"
-                             onClick={() => setSelectedContainer(selectedContainer === container.id ? null : container.id)}>
+                        <div className="container-header" onClick={() => setSelectedContainer(selectedContainer === container.id ? null : container.id)}>
                             <span>{container.websiteUrl}</span>
                             <i className={selectedContainer === container.id ? "fas fa-chevron-up" : "fas fa-chevron-down"}></i>
                         </div>
@@ -169,16 +179,9 @@ function User() {
                                 </button>
                                 {addingAccount && (
                                     <div className="add-account-form">
-                                        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)}
-                                               placeholder="Email"/>
-                                        <input type="password" value={password}
-                                               onChange={(e) => setPassword(e.target.value)} placeholder="Password"/>
-                                        {addLoading ? ( // Show loading during add
-                                            <div>Loading...</div>
-                                        ) : (
-                                            <button className="submit-button"
-                                                    onClick={() => handleAddAccount(container.id)}>Submit</button>
-                                        )}
+                                        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
+                                        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
+                                        {addLoading ? (<div>Loading...</div>) : (<button className="submit-button" onClick={() => handleAddAccount(container.id)}>Submit</button>)}
                                     </div>
                                 )}
                                 <ul className="account-list">
@@ -188,37 +191,20 @@ function User() {
                                                 <div className="email">Email: {account.email}</div>
                                                 <div className="password">
                                                     Password: {account.showPassword ? account.password : '********'}
-                                                    <button className="show-password-button"
-                                                            onClick={() => togglePasswordVisibility(container.id, account.id)}>
+                                                    <button className="show-password-button" onClick={() => togglePasswordVisibility(container.id, account.id)}>
                                                         {account.showPassword ? 'Hide' : 'Show'}
                                                     </button>
                                                 </div>
                                             </div>
                                             <div className="account-actions">
-                                                <button className="edit-account-button"
-                                                        onClick={() => openEditForm(account.id)}>Edit
-                                                </button>
-                                                {deleteLoading ? ( // Show loading during delete
-                                                    <div>Loading...</div>
-                                                ) : (
-                                                    <button className="delete-account-button"
-                                                            onClick={() => handleDeleteAccount(account.id)}>Delete</button>
-                                                )}
+                                                <button className="edit-account-button" onClick={() => openEditForm(account.id)}>Edit</button>
+                                                <button className="delete-account-button" onClick={() => handleDeleteAccount(account.id)}>{deleteLoading ? 'Loading...' : 'Delete'}</button>
                                             </div>
                                             {editAccountId === account.id && (
                                                 <div className="edit-form">
-                                                    <input type="email" value={editEmail}
-                                                           onChange={(e) => setEditEmail(e.target.value)}
-                                                           placeholder="New Email"/>
-                                                    <input type="password" value={editPassword}
-                                                           onChange={(e) => setEditPassword(e.target.value)}
-                                                           placeholder="New Password"/>
-                                                    {editLoading ? ( // Show loading during edit
-                                                        <div>Loading...</div>
-                                                    ) : (
-                                                        <button className="submit-button"
-                                                                onClick={() => handleEditAccount(account.id)}>Save</button>
-                                                    )}
+                                                    <input type="email" value={editEmail} onChange={(e) => setEditEmail(e.target.value)} placeholder="New Email" />
+                                                    <input type="password" value={editPassword} onChange={(e) => setEditPassword(e.target.value)} placeholder="New Password" />
+                                                    <button className="submit-button" onClick={() => handleEditAccount(account.id)}>{editLoading ? 'Loading...' : 'Save'}</button>
                                                 </div>
                                             )}
                                         </li>
@@ -229,9 +215,9 @@ function User() {
                     </div>
                 ))}
             </div>
-            <button className="logout-button" onClick={() => handleLogout()}>
-                {logoutLoading ? 'Logging out...' : 'Logout'}
-            </button>
+            <div>
+                <button className="logout-button" onClick={handleLogout}>{logoutLoading ? 'Logging out...' : 'Logout'}</button>
+            </div>
         </div>
     );
 }
