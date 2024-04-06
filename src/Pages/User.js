@@ -48,7 +48,6 @@ function User() {
     };
 
     const handleAddAccount = async (containerId) => {
-        if (!validateForm()) return;
         setAddLoading(true);
         try {
             const token = localStorage.getItem('token');
@@ -63,14 +62,6 @@ function User() {
             console.log("error in adding account", error.message);
             setAddLoading(false);
         }
-    };
-
-    const validateForm = () => {
-        if (!email.trim() || !password.trim()) {
-            setError("Email and password are required.");
-            return false;
-        }
-        return true;
     };
 
     const togglePasswordVisibility = (containerId, accountId) => {
@@ -90,7 +81,6 @@ function User() {
     };
 
     const handleEditAccount = async (accountId) => {
-        if (!validateForm()) return;
         setEditLoading(true);
         try {
             const token = localStorage.getItem('token');
