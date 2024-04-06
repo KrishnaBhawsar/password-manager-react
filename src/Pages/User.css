@@ -121,6 +121,7 @@
   color: #f53636;
   border: none;
   padding: 5px 5px;
+  margin-bottom: 10px;
   border-radius: 20px;
   cursor: pointer;
   transition: background-color 0.3s ease;
@@ -142,7 +143,7 @@
   margin-top: 10px;
   margin-bottom: 5px;
   margin-right: 5px;
-  margin-left: -20px;
+  margin-left: -25px;
 }
 .account-info-sub {
   margin-top: 10px;
