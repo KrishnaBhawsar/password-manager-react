@@ -1,5 +1,3 @@
-// Login.js
-
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
@@ -11,6 +9,7 @@ function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false); // State to track loading status
     const navigate = useNavigate();
 
     const handleLogin = () => {
@@ -19,6 +18,9 @@ function Login() {
             setError('Please fill out all fields');
             return;
         }
+
+        // Set loading to true when making the request
+        setLoading(true);
 
         axios.post("https://passwordmanager-07xe.onrender.com/login",{
             username, password
@@ -37,6 +39,9 @@ function Login() {
         }).catch(error => {
             setError('An error occurred. Please try again later.');
             console.error('Login error:', error);
+        }).finally(() => {
+            // Set loading back to false when response is received
+            setLoading(false);
         });
     };
 
@@ -78,8 +83,9 @@ function Login() {
                     type="button"
                     onClick={handleLogin}
                     className="login-button"
+                    disabled={loading} // Disable button while loading
                 >
-                    Login
+                    {loading ? 'Logging in...' : 'Login'} {/* Change button text based on loading state */}
                 </button>
             </form>
             <p className="signup-link">Don't have an account? <Link to={"/Signup"}>Sign Up</Link></p>

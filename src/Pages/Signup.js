@@ -9,6 +9,7 @@ function Signup() {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [signupSuccess, setSignupSuccess] = useState(false);
     const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false); // State to track loading status
 
     const handleSignup = () => {
         // Basic form validation
@@ -22,6 +23,9 @@ function Signup() {
             return;
         }
 
+        // Set loading to true when making the request
+        setLoading(true);
+
         axios.post("https://passwordmanager-07xe.onrender.com/user/signup", {
             username, password
         }).then((response) => {
@@ -34,6 +38,9 @@ function Signup() {
         }).catch(error => {
             setError('An error occurred. Please try again later.');
             console.error('Signup error:', error);
+        }).finally(() => {
+            // Set loading back to false when response is received
+            setLoading(false);
         });
     };
 
@@ -85,8 +92,9 @@ function Signup() {
                     type="button"
                     onClick={handleSignup}
                     className="signup-button"
+                    disabled={loading} // Disable button while loading
                 >
-                    Sign Up
+                    {loading ? 'Signing up...' : 'Sign Up'} {/* Change button text based on loading state */}
                 </button>
             </form>
             {signupSuccess && (

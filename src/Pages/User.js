@@ -7,7 +7,9 @@ function User() {
     const navigate = useNavigate();
     const [containers, setContainers] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [addLoading, setAddLoading] = useState(false); // State to manage loading during add
     const [editLoading, setEditLoading] = useState(false); // State to manage loading during edit
+    const [deleteLoading, setDeleteLoading] = useState(false); // State to manage loading during delete
     const [error, setError] = useState(null);
     const [selectedContainer, setSelectedContainer] = useState(null); // State to store the selected container
     const [addingAccount, setAddingAccount] = useState(false); // State to indicate if user is adding a new account
@@ -42,16 +44,21 @@ function User() {
         navigate("/user/add-container");
     };
 
-    const handleAddAccount = (containerId) => {
+    const handleAddAccount = async (containerId) => {
+        setAddLoading(true); // Set loading state to true during add
         const token = localStorage.getItem('token');
         try {
-            axios.post("https://passwordmanager-07xe.onrender.com/account/add", { email, password, containerId }, {
+            await axios.post("https://passwordmanager-07xe.onrender.com/account/add", { email, password, containerId }, {
                 headers: {
                     Authorization: `Bearer ${token}` // Set the Authorization header with the token
                 }
             });
+            setAddLoading(false); // Set loading state to false after response received
+            // Reload the page
+            window.location.reload();
         } catch (error) {
             console.log("error in adding account", error.message);
+            setAddLoading(false); // Set loading state to false if error occurs
         }
     };
 
@@ -99,16 +106,21 @@ function User() {
     };
 
     const handleDeleteAccount = async (accountId) => {
+        setDeleteLoading(true); // Set loading state to true during delete
         const token = localStorage.getItem('token');
         try {
-            axios.delete(`https://passwordmanager-07xe.onrender.com/account/delete`, {
+            await axios.delete(`https://passwordmanager-07xe.onrender.com/account/delete`, {
                 params:{accountId:accountId},
                 headers: {
                     Authorization: `Bearer ${token}` // Set the Authorization header with the token
                 }
             });
+            setDeleteLoading(false); // Set loading state to false after response received
+            // Reload the page
+            window.location.reload();
         } catch (error) {
             console.log("error in deleting account", error.message);
+            setDeleteLoading(false); // Set loading state to false if error occurs
         }
     };
 
@@ -138,7 +150,11 @@ function User() {
                                     <div className="add-account-form">
                                         <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
                                         <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
-                                        <button className="submit-button" onClick={() => handleAddAccount(container.id)}>Submit</button>
+                                        {addLoading ? ( // Show loading during add
+                                            <div>Loading...</div>
+                                        ) : (
+                                            <button className="submit-button" onClick={() => handleAddAccount(container.id)}>Submit</button>
+                                        )}
                                     </div>
                                 )}
                                 <ul className="account-list">
@@ -155,7 +171,11 @@ function User() {
                                             </div>
                                             <div className="account-actions">
                                                 <button className="edit-account-button" onClick={() => openEditForm(account.id)}>Edit</button>
-                                                <button className="delete-account-button" onClick={() => handleDeleteAccount(account.id)}>Delete</button>
+                                                {deleteLoading ? ( // Show loading during delete
+                                                    <div>Loading...</div>
+                                                ) : (
+                                                    <button className="delete-account-button" onClick={() => handleDeleteAccount(account.id)}>Delete</button>
+                                                )}
                                             </div>
                                             {editAccountId === account.id && (
                                                 <div className="edit-form">
