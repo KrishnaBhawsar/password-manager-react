@@ -10,6 +10,7 @@ function User() {
     const [addLoading, setAddLoading] = useState(false); // State to manage loading during add
     const [editLoading, setEditLoading] = useState(false); // State to manage loading during edit
     const [deleteLoading, setDeleteLoading] = useState(false); // State to manage loading during delete
+    const [logoutLoading, setLogoutLoading] = useState(false); // State to manage loading during logout
     const [error, setError] = useState(null);
     const [selectedContainer, setSelectedContainer] = useState(null); // State to store the selected container
     const [addingAccount, setAddingAccount] = useState(false); // State to indicate if user is adding a new account
@@ -125,16 +126,21 @@ function User() {
     };
 
     const handleLogout = () => {
+        setLogoutLoading(true); // Set loading state to true during logout
         const token = localStorage.getItem('token');
-        axios.post("http://passwordmanager-07xe.onrender.com/user/logout", {},{
+        axios.post("https://passwordmanager-07xe.onrender.com/user/logout", {},{
             headers:{
                 Authorization: `Bearer ${token}`
             }
         }).then((response)=>{
+            setLogoutLoading(false); // Set loading state to false after response received
             if(response.data.message==='LOGOUT_SUCCESSFULLY') {
                 navigate('/login');
             }
-        })
+        }).catch(error => {
+            console.log("error in logout", error.message);
+            setLogoutLoading(false); // Set loading state to false if error occurs
+        });
     };
 
 
@@ -151,7 +157,8 @@ function User() {
             <div className="container-list">
                 {containers.map(container => (
                     <div key={container.id} className="container-item">
-                        <div className="container-header" onClick={() => setSelectedContainer(selectedContainer === container.id ? null : container.id)}>
+                        <div className="container-header"
+                             onClick={() => setSelectedContainer(selectedContainer === container.id ? null : container.id)}>
                             <span>{container.websiteUrl}</span>
                             <i className={selectedContainer === container.id ? "fas fa-chevron-up" : "fas fa-chevron-down"}></i>
                         </div>
@@ -162,12 +169,15 @@ function User() {
                                 </button>
                                 {addingAccount && (
                                     <div className="add-account-form">
-                                        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
-                                        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
+                                        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)}
+                                               placeholder="Email"/>
+                                        <input type="password" value={password}
+                                               onChange={(e) => setPassword(e.target.value)} placeholder="Password"/>
                                         {addLoading ? ( // Show loading during add
                                             <div>Loading...</div>
                                         ) : (
-                                            <button className="submit-button" onClick={() => handleAddAccount(container.id)}>Submit</button>
+                                            <button className="submit-button"
+                                                    onClick={() => handleAddAccount(container.id)}>Submit</button>
                                         )}
                                     </div>
                                 )}
@@ -178,27 +188,36 @@ function User() {
                                                 <div className="email">Email: {account.email}</div>
                                                 <div className="password">
                                                     Password: {account.showPassword ? account.password : '********'}
-                                                    <button className="show-password-button" onClick={() => togglePasswordVisibility(container.id, account.id)}>
+                                                    <button className="show-password-button"
+                                                            onClick={() => togglePasswordVisibility(container.id, account.id)}>
                                                         {account.showPassword ? 'Hide' : 'Show'}
                                                     </button>
                                                 </div>
                                             </div>
                                             <div className="account-actions">
-                                                <button className="edit-account-button" onClick={() => openEditForm(account.id)}>Edit</button>
+                                                <button className="edit-account-button"
+                                                        onClick={() => openEditForm(account.id)}>Edit
+                                                </button>
                                                 {deleteLoading ? ( // Show loading during delete
                                                     <div>Loading...</div>
                                                 ) : (
-                                                    <button className="delete-account-button" onClick={() => handleDeleteAccount(account.id)}>Delete</button>
+                                                    <button className="delete-account-button"
+                                                            onClick={() => handleDeleteAccount(account.id)}>Delete</button>
                                                 )}
                                             </div>
                                             {editAccountId === account.id && (
                                                 <div className="edit-form">
-                                                    <input type="email" value={editEmail} onChange={(e) => setEditEmail(e.target.value)} placeholder="New Email" />
-                                                    <input type="password" value={editPassword} onChange={(e) => setEditPassword(e.target.value)} placeholder="New Password" />
+                                                    <input type="email" value={editEmail}
+                                                           onChange={(e) => setEditEmail(e.target.value)}
+                                                           placeholder="New Email"/>
+                                                    <input type="password" value={editPassword}
+                                                           onChange={(e) => setEditPassword(e.target.value)}
+                                                           placeholder="New Password"/>
                                                     {editLoading ? ( // Show loading during edit
                                                         <div>Loading...</div>
                                                     ) : (
-                                                        <button className="submit-button" onClick={() => handleEditAccount(account.id)}>Save</button>
+                                                        <button className="submit-button"
+                                                                onClick={() => handleEditAccount(account.id)}>Save</button>
                                                     )}
                                                 </div>
                                             )}
@@ -210,7 +229,9 @@ function User() {
                     </div>
                 ))}
             </div>
-            <button onClick={() => handleLogout()}>Logout</button>
+            <button className="logout-button" onClick={() => handleLogout()}>
+                {logoutLoading ? 'Logging out...' : 'Logout'}
+            </button>
         </div>
     );
 }

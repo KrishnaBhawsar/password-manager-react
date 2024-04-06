@@ -190,3 +190,19 @@
 .submit-button:hover {
   background-color: #0c73b6;
 }
+
+/* Add styles for the logout button */
+.logout-button {
+  background-color: #dc3545; /* Red color for logout button */
+  color: #fff; /* White text color */
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.logout-button:hover {
+  background-color: #c82333; /* Darker red color on hover */
+}
+
