@@ -166,7 +166,7 @@ function User() {
                             <i className={selectedContainer === container.id ? "fas fa-chevron-up" : "fas fa-chevron-down"}></i>
                         </div>
                         {selectedContainer === container.id && (
-                            <   div className="account-info-sub">
+                            <div className="account-info-sub">
                                 <ul>
                                     {container.accounts.map(account => (
                                         <ul key={account.id} className="account-item">
