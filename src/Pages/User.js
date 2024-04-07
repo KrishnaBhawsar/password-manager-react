@@ -155,7 +155,7 @@ function User() {
     return (
         <div className="user-container">
             <div className="user-header">
-                <h2>{accountOwner}!</h2>
+                <h2>{accountOwner}</h2>
                 <button className="add-container-button" onClick={handleAddContainer}>Add Container</button>
             </div>
             <div className="container-list">
